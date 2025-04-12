@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Dashboard Petani</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="active">
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li>
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li>
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li>
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li>
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li>
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Selamat Pagi, Pak Slamet</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-bell"></i> <span class="notification-badge">3</span></button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Catat Aktivitas</button>
+                </div>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="weather-widget">
+                <div class="weather-top">
+                    <div class="weather-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="weather-info">
+                        <div class="weather-temp">28°C</div>
+                        <div class="weather-desc">Cerah - Cianjur</div>
+                    </div>
+                </div>
+                <div class="weather-forecast">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Status Cards -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Status Tanaman</h3>
+                        <span class="badge badge-success">Baik</span>
+                    </div>
+                    <div class="crop-status">
+                        <div class="crop-image-container">
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmljZSUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Padi" class="crop-status-image">
+                        </div>
+                        <div class="crop-details">
+                            <div class="crop-name">Padi IR-64</div>
+                            <div class="crop-phase">Fase: Vegetatif (25 hari)</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" style="width: 30%;"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <div>30% dari siklus tanam</div>
+                                <div>Perkiraan panen: 65 hari lagi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Dana Proyek</h3>
+                    </div>
+                    <div class="finance-summary">
+                        <div class="finance-amount">Rp 12.500.000</div>
+                        <div class="finance-label">Total Dana Proyek</div>
+                        <div class="finance-details">
+                            <div class="finance-detail">
+                                <div class="finance-detail-label">Terpakai</div>
+                                <div class="finance-detail-value">Rp 4.250.000</div>
+                            </div>
+                            <div class="finance-detail">
+                                <div class="finance-detail-label">Tersisa</div>
+                                <div class="finance-detail-value">Rp 8.250.000</div>
+                            </div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 34%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <div>34% terpakai</div>
+                            <div>Pencairan berikutnya: 15 Mei</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Jadwal Kegiatan</h3>
+                    <button class="btn btn-sm btn-outline"><i class="fas fa-plus"></i> Tambah</button>
+                </div>
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Pemupukan Tahap 2</div>
+                            <div class="task-due"><i class="fas fa-calendar"></i> Hari ini, 14:00</div>
+                        </div>
+                        <div class="task-priority priority-high">Penting</div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Penyemprotan Hama</div>
+                            <div class="task-due"><i class="fas fa-calendar"></i> Besok, 07:00</div>
+                        </div>
+                        <div class="task-priority priority-medium">Sedang</div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Konsultasi dengan Penyuluh</div>
+                            <div class="task-due"><i class="fas fa-calendar"></i> 15 Apr, 10:00</div>
+                        </div>
+                        <div class="task-priority priority-medium">Sedang</div>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <div class="task-content">
+                            <div class="task-title">Pengairan Lahan</div>
+                            <div class="task-due"><i class="fas fa-calendar"></i> 18 Apr, 06:00</div>
+                        </div>
+                        <div class="task-priority priority-low">Biasa</div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline">Lihat Semua Jadwal</button>
+                </div>
+            </div>
+
+            <!-- Tips and Recommendations -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tips Hari Ini</h3>
+                </div>
+                <div class="tip-content">
+                    <div class="tip-image-container">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFybWluZ3xlbnwwfHwwfHw%3D&w=1000&q=80" alt="Tips Pertanian" class="tip-image">
+                    </div>
+                    <div class="tip-text">
+                        <h4>Cara Mengenali Tanaman Padi yang Kekurangan Nutrisi</h4>
+                        <p>Perhatikan warna daun padi Anda. Jika daun menguning dari ujung ke pangkal, ini bisa jadi tanda kekurangan nitrogen. Solusinya adalah dengan menambahkan pupuk urea dengan dosis yang tepat.</p>
+                        <div class="tip-actions">
+                            <button class="btn btn-sm btn-outline">Baca Selengkapnya</button>
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-bookmark"></i> Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Aktivitas Terakhir</h3>
+                </div>
+                <div class="activity-feed">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Pengairan Lahan</div>
+                            <div class="activity-desc">Pengairan dilakukan selama 2 jam dengan debit normal</div>
+                            <div class="activity-time">Kemarin, 06:30</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Dokumentasi Tanaman</div>
+                            <div class="activity-desc">3 foto tanaman diambil untuk pemantauan pertumbuhan</div>
+                            <div class="activity-time">10 Apr, 15:20</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-hand-holding-medical"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Pemupukan Tahap 1</div>
+                            <div class="activity-desc">Pupuk NPK diberikan dengan dosis 250kg/ha</div>
+                            <div class="activity-time">8 Apr, 07:15</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-outline">Lihat Semua Aktivitas</button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-container">
+                <h3>Aksi Cepat</h3>
+                <div class="quick-actions">
+                    <a href="crop-management.html" class="quick-action-item">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="quick-action-label">Foto Tanaman</div>
+                    </a>
+                    <a href="marketplace.html" class="quick-action-item">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="quick-action-label">Beli Saprotan</div>
+                    </a>
+                    <a href="knowledge-base.html" class="quick-action-item">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="quick-action-label">Tanya Ahli</div>
+                    </a>
+                    <a href="community.html" class="quick-action-item">
+                        <div class="quick-action-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="quick-action-label">Grup Tani</div>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="active">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>

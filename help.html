@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Bantuan</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to help page */
+        .search-container {
+            display: flex;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-sm);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-medium);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .help-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        .help-tab {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .help-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .help-tab i {
+            margin-right: var(--spacing-sm);
+        }
+        
+        .help-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .help-section-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+        }
+        
+        .help-section-title i {
+            margin-right: var(--spacing-sm);
+            color: var(--primary-color);
+        }
+        
+        .help-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .help-card-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .help-card-description {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .getting-started {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+        
+        .step-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .step-description {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .feature-title {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .feature-description {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+            flex: 1;
+        }
+        
+        .faq-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .faq-question {
+            padding: var(--spacing-md);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-answer {
+            padding: 0 var(--spacing-md) var(--spacing-md);
+            color: var(--text-medium);
+            display: none;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .video-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .video-content {
+            padding: var(--spacing-md);
+        }
+        
+        .video-title {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .video-duration {
+            font-weight: 500;
+        }
+        
+        .video-views {
+            color: var(--text-medium);
+        }
+        
+        .contact-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .contact-method {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .contact-icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .contact-title {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .contact-info {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .contact-form {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: var(--spacing-lg);
+        }
+        
+        @media (max-width: 768px) {
+            .help-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: var(--spacing-xs);
+            }
+            
+            .step-card {
+                flex-direction: column;
+            }
+            
+            .step-number {
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .feature-grid, .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                margin-bottom: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li>
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li>
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li>
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li>
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li class="active">
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Bantuan</h1>
+            </div>
+
+            <!-- Help Tabs -->
+            <div class="help-tabs">
+                <div class="help-tab active"><i class="fas fa-book"></i> Panduan</div>
+                <div class="help-tab"><i class="fas fa-question-circle"></i> FAQ</div>
+                <div class="help-tab"><i class="fas fa-video"></i> Video Tutorial</div>
+                <div class="help-tab"><i class="fas fa-headset"></i> Hubungi Kami</div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Cari bantuan...">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </div>
+
+            <!-- Getting Started Section -->
+            <div class="getting-started">
+                <h2 class="help-section-title"><i class="fas fa-rocket"></i> Memulai dengan AgriChain</h2>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Buat Profil</h3>
+                            <p class="step-description">Lengkapi profil Anda dengan informasi pertanian yang akurat untuk mendapatkan rekomendasi yang sesuai.</p>
+                            <button class="btn btn-outline">Lihat Panduan</button>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Tambahkan Tanaman</h3>
+                            <p class="step-description">Tambahkan tanaman yang sedang Anda budidayakan untuk memantau pertumbuhan dan mendapatkan saran perawatan.</p>
+                            <button class="btn btn-outline">Lihat Panduan</button>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Jelajahi Toko</h3>
+                            <p class="step-description">Temukan produk pertanian berkualitas dengan harga terbaik di Toko Tani.</p>
+                            <button class="btn btn-outline">Lihat Panduan</button>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Gabung Komunitas</h3>
+                            <p class="step-description">Bergabunglah dengan komunitas petani untuk berbagi pengalaman dan mendapatkan dukungan.</p>
+                            <button class="btn btn-outline">Lihat Panduan</button>
+                        </div>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3 class="step-title">Hubungkan Dompet</h3>
+                            <p class="step-description">Hubungkan dompet kripto Anda untuk mengakses fitur investasi dan pembayaran.</p>
+                            <button class="btn btn-outline">Lihat Panduan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Guides -->
+            <div class="help-section">
+                <h2 class="help-section-title"><i class="fas fa-lightbulb"></i> Panduan Fitur</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3 class="feature-title">Tanaman Saya</h3>
+                        <p class="feature-description">Panduan mengelola tanaman, memantau pertumbuhan, dan mencatat aktivitas pertanian.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <h3 class="feature-title">Toko Tani</h3>
+                        <p class="feature-description">Cara membeli produk, mengikuti beli bersama, dan menyewa alat pertanian.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="feature-title">Pusat Ilmu</h3>
+                        <p class="feature-description">Cara mengakses artikel, video, dan menyimpan konten untuk dibaca offline.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Komunitas</h3>
+                        <p class="feature-description">Cara berinteraksi dengan petani lain, mengikuti acara, dan berkonsultasi dengan ahli.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="feature-title">Dompet Kripto</h3>
+                        <p class="feature-description">Cara menghubungkan dompet, melakukan transaksi, dan mengelola aset kripto.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Penggunaan Aplikasi</h3>
+                        <p class="feature-description">Panduan penggunaan aplikasi di berbagai perangkat dan mode offline.</p>
+                        <button class="btn btn-outline btn-block">Lihat Panduan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section (Hidden by default) -->
+            <div class="faq-section" style="display: none;">
+                <h2 class="help-section-title"><i class="fas fa-question-circle"></i> Pertanyaan Umum</h2>
+                <div class="faq-item active">
+                    <div class="faq-question">
+                        Bagaimana cara menambahkan tanaman baru?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Untuk menambahkan tanaman baru, buka halaman "Tanaman Saya" dan klik tombol "Tambah Tanaman" di pojok kanan atas. Isi formulir dengan informasi tanaman Anda seperti jenis tanaman, tanggal tanam, dan lokasi. Setelah itu, klik "Simpan" untuk menambahkan tanaman ke daftar Anda.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Bagaimana cara menggunakan aplikasi dalam mode offline?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        AgriChain dapat digunakan dalam mode offline. Data yang Anda input akan disimpan secara lokal dan akan disinkronkan ketika Anda terhubung kembali ke internet. Fitur-fitur seperti pencatatan aktivitas pertanian, pemantauan tanaman, dan akses ke konten yang telah disimpan sebelumnya tetap dapat digunakan tanpa koneksi internet.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Bagaimana cara menghubungi ahli pertanian?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Untuk menghubungi ahli pertanian, buka halaman "Komunitas" dan pilih tab "Pakar Tani". Di sana Anda dapat melihat daftar ahli pertanian yang tersedia. Klik pada profil ahli yang ingin Anda hubungi, lalu klik tombol "Tanya Ahli" untuk memulai konsultasi.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Bagaimana cara menyewa alat pertanian?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Untuk menyewa alat pertanian, buka halaman "Toko Tani" dan pilih kategori "Alat Pertanian untuk Disewa". Pilih alat yang ingin Anda sewa, tentukan tanggal dan durasi penyewaan, lalu klik "Sewa Sekarang". Anda dapat melakukan pembayaran melalui dompet kripto atau metode pembayaran lainnya yang tersedia.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Bagaimana cara mengakses konten offline?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Untuk mengakses konten secara offline, buka halaman "Pusat Ilmu" dan cari artikel atau video yang ingin Anda simpan. Klik ikon "Simpan" di pojok kanan atas konten. Konten yang telah disimpan dapat diakses melalui tab "Tersimpan" di halaman "Pusat Ilmu" meskipun Anda sedang offline.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>

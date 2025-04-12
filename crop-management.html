@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Tanaman Saya</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to crop management */
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            background-color: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid #FF9800;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .alert-icon {
+            color: #FF9800;
+            font-size: 1.5rem;
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .alert-message {
+            color: var(--text-medium);
+        }
+        
+        .crop-item {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .crop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .crop-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .crop-image-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .crop-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .crop-details-container {
+            padding: var(--spacing-lg);
+        }
+        
+        .crop-date {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .crop-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        .crop-stat {
+            flex: 1;
+            min-width: 120px;
+            background-color: rgba(46, 125, 50, 0.05);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            text-align: center;
+        }
+        
+        .crop-stat-value {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .crop-stat-label {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .progress-container {
+            height: 12px;
+            background-color: #E0E0E0;
+            border-radius: 6px;
+            margin-bottom: var(--spacing-xs);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 6px;
+        }
+        
+        .progress-label {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .crop-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-color);
+            padding-top: var(--spacing-lg);
+        }
+        
+        .crop-detail {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .crop-detail-label {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .crop-detail-value {
+            font-weight: 500;
+        }
+        
+        .activity-feed {
+            margin-top: var(--spacing-lg);
+        }
+        
+        .activity-item {
+            display: flex;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .activity-desc {
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-medium);
+        }
+        
+        .activity-time {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .crop-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+        }
+        
+        .crop-tab {
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .crop-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .crop-tab-content {
+            display: none;
+        }
+        
+        .crop-tab-content.active {
+            display: block;
+        }
+        
+        .task-list {
+            margin-top: var(--spacing-md);
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .task-checkbox {
+            margin-right: var(--spacing-md);
+            width: 20px;
+            height: 20px;
+        }
+        
+        .task-content {
+            flex: 1;
+        }
+        
+        .task-title {
+            font-weight: 500;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .task-due {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .task-priority {
+            margin-left: var(--spacing-md);
+            font-size: var(--font-size-small);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .priority-high {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .priority-medium {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: #FF9800;
+        }
+        
+        .priority-low {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+        }
+        
+        .weather-widget {
+            background-color: #E3F2FD;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .weather-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .weather-icon {
+            font-size: 2rem;
+            margin-right: var(--spacing-md);
+            color: #1976D2;
+        }
+        
+        .weather-info {
+            flex: 1;
+        }
+        
+        .weather-temp {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .weather-desc {
+            color: var(--text-medium);
+        }
+        
+        .weather-forecast {
+            display: flex;
+            gap: var(--spacing-md);
+            overflow-x: auto;
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        .forecast-day {
+            text-align: center;
+            min-width: 60px;
+        }
+        
+        .forecast-icon {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .notes-section {
+            margin-top: var(--spacing-lg);
+        }
+        
+        .note-item {
+            background-color: #FFF9C4;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .note-date {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .note-text {
+            font-style: italic;
+        }
+        
+        .add-note {
+            display: flex;
+            margin-top: var(--spacing-md);
+        }
+        
+        .add-note-input {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            margin-right: var(--spacing-sm);
+        }
+        
+        .add-note-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--border-color);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .empty-state-text {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        @media (max-width: 768px) {
+            .crop-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .crop-actions {
+                margin-top: var(--spacing-sm);
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .crop-stats {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .crop-stat {
+                width: 100%;
+            }
+            
+            .crop-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li class="active">
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li>
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li>
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li>
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li>
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Tanaman Saya</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-filter"></i> Filter</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Tanaman</button>
+                </div>
+            </div>
+
+            <!-- Alert Section -->
+            <div class="alert">
+                <div class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">Perhatian: Tanda Serangan Wereng</div>
+                    <div class="alert-message">Ditemukan tanda-tanda awal serangan wereng di beberapa bagian tanaman. Disarankan untuk melakukan penyemprotan pestisida dalam 2 hari ke depan.</div>
+                </div>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="weather-widget">
+                <div class="weather-top">
+                    <div class="weather-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="weather-info">
+                        <div class="weather-temp">28°C</div>
+                        <div class="weather-desc">Cerah - Cianjur</div>
+                    </div>
+                </div>
+                <div class="weather-forecast">
+                    <div class="forecast-day">
+                        <div class="forecast-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="forecast-day-name">Sen</div>
+                        <div class="forecast-temp">29°</div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="forecast-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="forecast-day-name">Sel</div>
+                        <div class="forecast-temp">30°</div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="forecast-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="forecast-day-name">Rab</div>
+                        <div class="forecast-temp">28°</div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="forecast-icon">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <div class="forecast-day-name">Kam</div>
+                        <div class="forecast-temp">27°</div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="forecast-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="forecast-day-name">Jum</div>
+                        <div class="forecast-temp">28°</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Crop List Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tanaman Aktif</h3>
+                    <button class="btn btn-sm btn-outline"><i class="fas fa-sync"></i> Segarkan</button>
+                </div>
+                
+                <!-- Crop Tabs -->
+                <div class="crop-tabs">
+                    <div class="crop-tab active">Informasi Umum</div>
+                    <div class="crop-tab">Jadwal Kegiatan</div>
+                    <div class="crop-tab">Catatan</div>
+                    <div class="crop-tab">Riwayat Aktivitas</div>
+                </div>
+                
+                <!-- Crop Item -->
+                <div class="crop-item">
+                    <div class="crop-header">
+                        <div>
+                            <h3 class="crop-name">Padi IR-64</h3>
+                            <span class="badge badge-success">Sehat</span>
+                        </div>
+                        <div class="crop-actions">
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-camera"></i> Foto</button>
+                            <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Catat</button>
+                        </div>
+                    </div>
+                    
+                    <div class="crop-image-container">
+                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmljZSUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Padi" class="crop-image">
+                    </div>
+                    
+                    <div class="crop-details-container">
+                        <div class="crop-date">12 Apr 2025</div>
+                        
+                        <div class="crop-stats">
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">25 hari</div>
+                                <div class="crop-stat-label">Usia Tanaman</div>
+                            </div>
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">Vegetatif</div>
+                                <div class="crop-stat-label">Fase</div>
+                            </div>
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">65 hari</div>
+                                <div class="crop-stat-label">Perkiraan Panen</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 30%;"></div>
+                        </div>
+                        <div class="progress-label">30% dari siklus tanam</div>
+                        
+                        <div class="crop-details-grid">
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Luas Lahan</div>
+                                <div class="crop-detail-value">0.5 hektar</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Perkiraan Hasil</div>
+                                <div class="crop-detail-value">3.5 ton</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Lokasi</div>
+                                <div class="crop-detail-value">Blok A3, Cianjur</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Tanggal Tanam</div>
+                                <div class="crop-detail-value">18 Mar 2025</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tab Content -->
+                        <div class="crop-tab-content active">
+                            <!-- Content for Informasi Umum tab is already displayed above -->
+                        </div>
+                        
+                        <div class="crop-tab-content">
+                            <!-- Content for Jadwal Kegiatan tab -->
+                            <h4 class="mt-3 mb-2">Jadwal Kegiatan Mendatang</h4>
+                            <div class="task-list">
+                                <div class="task-item">
+                                    <input type="checkbox" class="task-checkbox">
+                                    <div class="task-content">
+                                        <div class="task-title">Pemupukan Tahap 2</div>
+                                        <div class="task-due"><i class="fas fa-calendar"></i> 14 Apr 2025, 14:00</div>
+                                    </div>
+                                    <div class="task-priority priority-high">Penting</div>
+                                </div>
+                                <div class="task-item">
+                                    <input type="checkbox" class="task-checkbox">
+                                    <div class="task-content">
+                                        <div class="task-title">Penyemprotan Hama</div>
+                                        <div class="task-due"><i class="fas fa-calendar"></i> 15 Apr 2025, 07:00</div>
+                                    </div>
+                                    <div class="task-priority priority-medium">Sedang</div>
+                                </div>
+                                <div class="task-item">
+                                    <input type="checkbox" class="task-checkbox">
+                                    <div class="task-content">
+                                        <div class="task-title">Pengairan Lahan</div>
+                                        <div class="task-due"><i class="fas fa-calendar"></i> 18 Apr 2025, 06:00</div>
+                                    </div>
+                                    <div class="task-priority priority-low">Biasa</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="crop-tab-content">
+                            <!-- Content for Catatan tab -->
+                            <div class="notes-section">
+                                <div class="note-item">
+                                    <div class="note-date">10 Apr 2025</div>
+                                    <div class="note-text">Tanaman tumbuh dengan baik. Daun hijau dan sehat. Perlu perhatikan tanda-tanda serangan hama.</div>
+                                </div>
+                                <div class="note-item">
+                                    <div class="note-date">5 Apr 2025</div>
+                                    <div class="note-text">Pemupukan pertama berhasil. Tanaman mulai menunjukkan pertumbuhan yang baik.</div>
+                                </div>
+                                <div class="note-item">
+                                    <div class="note-date">25 Mar 2025</div>
+                                    <div class="note-text">Bibit mulai tumbuh dengan baik. Ketinggian air dijaga pada 3-5 cm.</div>
+                                </div>
+                                <div class="add-note">
+                                    <input type="text" class="add-note-input" placeholder="Tambahkan catatan baru...">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="crop-tab-content">
+                            <!-- Content for Riwayat Aktivitas tab -->
+                            <div class="activity-feed">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Foto Dokumentasi</div>
+                                        <div class="activity-desc">Foto mingguan untuk pemantauan pertumbuhan</div>
+                                        <div class="activity-time">Hari ini, 08:30</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-water"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Pengairan</div>
+                                        <div class="activity-desc">Menambah ketinggian air menjadi 5cm</div>
+                                        <div class="activity-time">Kemarin, 06:45</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-hand-holding-medical"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Pemupukan</div>
+                                        <div class="activity-desc">Pupuk NPK dengan dosis 250kg/ha</div>
+                                        <div class="activity-time">8 Apr, 07:15</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Crop Item -->
+                <div class="crop-item">
+                    <div class="crop-header">
+                        <div>
+                            <h3 class="crop-name">Jagung Hibrida</h3>
+                            <span class="badge badge-warning">Perlu Perhatian</span>
+                        </div>
+                        <div class="crop-actions">
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-camera"></i> Foto</button>
+                            <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Catat</button>
+                        </div>
+                    </div>
+                    
+                    <div class="crop-image-container">
+                        <img src="https://images.unsplash.com/photo-1601472543446-91e2f1d61a5a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29ybiUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Jagung" class="crop-image">
+                    </div>
+                    
+                    <div class="crop-details-container">
+                        <div class="crop-date">12 Apr 2025</div>
+                        
+                        <div class="crop-stats">
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">15 hari</div>
+                                <div class="crop-stat-label">Usia Tanaman</div>
+                            </div>
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">Vegetatif</div>
+                                <div class="crop-stat-label">Fase</div>
+                            </div>
+                            <div class="crop-stat">
+                                <div class="crop-stat-value">75 hari</div>
+                                <div class="crop-stat-label">Perkiraan Panen</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 15%;"></div>
+                        </div>
+                        <div class="progress-label">15% dari siklus tanam</div>
+                        
+                        <div class="crop-details-grid">
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Luas Lahan</div>
+                                <div class="crop-detail-value">0.3 hektar</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Perkiraan Hasil</div>
+                                <div class="crop-detail-value">2.1 ton</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Lokasi</div>
+                                <div class="crop-detail-value">Blok B2, Cianjur</div>
+                            </div>
+                            <div class="crop-detail">
+                                <div class="crop-detail-label">Tanggal Tanam</div>
+                                <div class="crop-detail-value">28 Mar 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html" class="active">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crop tabs functionality
+            const cropTabs = document.querySelectorAll('.crop-tab');
+            const cropTabContents = document.querySelectorAll('.crop-tab-content');
+            
+            cropTabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    cropTabs.forEach(t => t.classList.remove('active'));
+                    cropTabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    cropTabContents[index].classList.add('active');
+                });
+            });
+            
+            // Task checkboxes
+            const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+            
+            taskCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const taskItem = this.closest('.task-item');
+                    if (this.checked) {
+                        taskItem.style.opacity = '0.5';
+                        taskItem.style.textDecoration = 'line-through';
+                    } else {
+                        taskItem.style.opacity = '1';
+                        taskItem.style.textDecoration = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>

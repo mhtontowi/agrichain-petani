@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Komunitas</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to community */
+        .search-container {
+            display: flex;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-sm);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-medium);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .community-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        .community-tab {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .community-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .post-composer {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .composer-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-medium);
+            margin-bottom: var(--spacing-md);
+            resize: none;
+        }
+        
+        .composer-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .composer-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .composer-action {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: #f5f5f5;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .composer-action i {
+            margin-right: var(--spacing-sm);
+        }
+        
+        .trending-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .trending-topic {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--primary-color);
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .post-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .post-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-right: var(--spacing-md);
+        }
+        
+        .post-author-info h3 {
+            font-size: var(--font-size-medium);
+            margin-bottom: 0;
+        }
+        
+        .post-meta {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .post-options {
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+        
+        .post-content {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+        
+        .post-action i {
+            margin-right: var(--spacing-xs);
+        }
+        
+        .comments-section {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: var(--spacing-md);
+        }
+        
+        .comment-content {
+            flex: 1;
+            background-color: #f5f5f5;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .comment-text {
+            font-size: var(--font-size-small);
+        }
+        
+        .comment-input-container {
+            display: flex;
+            margin-top: var(--spacing-md);
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-small);
+            margin-right: var(--spacing-sm);
+        }
+        
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .event-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .event-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .event-content {
+            padding: var(--spacing-md);
+        }
+        
+        .event-date {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .event-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .event-details {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .event-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-xs);
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .event-detail i {
+            margin-right: var(--spacing-sm);
+            width: 16px;
+        }
+        
+        .event-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .group-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .group-banner {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+        
+        .group-content {
+            padding: var(--spacing-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .group-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin-top: -32px;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .group-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .group-meta {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .group-description {
+            margin-bottom: var(--spacing-md);
+            flex: 1;
+        }
+        
+        .expert-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+        }
+        
+        .expert-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin-right: var(--spacing-md);
+        }
+        
+        .expert-info {
+            flex: 1;
+        }
+        
+        .expert-name {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .expert-title {
+            font-size: var(--font-size-small);
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .expert-bio {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .expert-stats {
+            display: flex;
+            gap: var(--spacing-md);
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        @media (max-width: 768px) {
+            .community-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: var(--spacing-xs);
+            }
+            
+            .post-actions {
+                flex-wrap: wrap;
+                gap: var(--spacing-sm);
+            }
+            
+            .expert-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .expert-avatar {
+                margin-right: 0;
+                margin-bottom: var(--spacing-md);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li>
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li>
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li>
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li class="active">
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li>
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Komunitas</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-bell"></i> Notifikasi</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Buat Postingan</button>
+                </div>
+            </div>
+
+            <!-- Community Tabs -->
+            <div class="community-tabs">
+                <div class="community-tab active">Forum Diskusi</div>
+                <div class="community-tab">Acara</div>
+                <div class="community-tab">Grup Tani</div>
+                <div class="community-tab">Pakar Tani</div>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Cari di komunitas...">
+                <button class="btn btn-outline"><i class="fas fa-filter"></i> Filter</button>
+            </div>
+
+            <!-- Post Composer -->
+            <div class="post-composer">
+                <textarea class="composer-input" placeholder="Bagikan pengalaman atau tanyakan sesuatu..."></textarea>
+                <div class="composer-actions">
+                    <button class="composer-action"><i class="fas fa-camera"></i> Foto</button>
+                    <button class="composer-action"><i class="fas fa-video"></i> Video</button>
+                    <button class="composer-action"><i class="fas fa-map-marker-alt"></i> Lokasi</button>
+                </div>
+            </div>
+
+            <!-- Trending Topics -->
+            <h3>Topik Populer</h3>
+            <div class="trending-topics">
+                <a href="#" class="trending-topic">#HargaPadi</a>
+                <a href="#" class="trending-topic">#MusimTanam</a>
+                <a href="#" class="trending-topic">#PengendalianHama</a>
+                <a href="#" class="trending-topic">#BibitUnggul</a>
+                <a href="#" class="trending-topic">#TeknologiPertanian</a>
+            </div>
+
+            <!-- Posts -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Pak Hadi" class="post-avatar">
+                        <div class="post-author-info">
+                            <h3>Pak Hadi Wijaya</h3>
+                            <div class="post-meta">2 jam yang lalu · Cianjur, Jawa Barat</div>
+                        </div>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Selamat pagi teman-teman petani! Saya mau berbagi pengalaman menggunakan varietas padi Inpari 32 musim tanam ini. Hasilnya sangat memuaskan, tahan terhadap wereng dan hasil panen meningkat sekitar 15% dibanding musim lalu. Ada yang sudah mencoba varietas ini juga?</p>
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmljZSUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Sawah Padi" class="post-image">
+                </div>
+                <div class="post-actions">
+                    <div class="post-action"><i class="fas fa-thumbs-up"></i> 24 Suka</div>
+                    <div class="post-action"><i class="fas fa-comment"></i> 8 Komentar</div>
+                    <div class="post-action"><i class="fas fa-share"></i> Bagikan</div>
+                    <div class="post-action"><i class="fas fa-bookmark"></i> Simpan</div>
+                </div>
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pak Dedi" class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-author">Pak Dedi Supriyadi</div>
+                            <div class="comment-text">Saya juga sudah coba varietas ini, memang bagus hasilnya. Tapi perlu pupuk yang cukup ya pak.</div>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Bu Ani" class="comment-avatar">
+                        <div class="comment-content">
+                            <div class="comment-author">Bu Ani Suryani</div>
+                            <div class="comment-text">Berapa harga bibitnya pak? Dan dimana bisa mendapatkannya?</div>
+                        </div>
+                    </div>
+                    <div class="comment-input-container">
+                        <input type="text" class="comment-input" placeholder="Tulis komentar...">
+                        <button class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Pak Joko" class="post-avatar">
+                        <div class="post-author-info">
+                            <h3>Pak Joko Santoso</h3>
+                            <div class="post-meta">Kemarin · Subang, Jawa Barat</div>
+                        </div>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Teman-teman, ada yang punya solusi untuk mengatasi serangan tikus di sawah? Sudah coba beberapa cara tapi masih belum efektif. Mohon sarannya 🙏</p>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action"><i class="fas fa-thumbs-up"></i> 12 Suka</div>
+                    <div class="post-action"><i class="fas fa-comment"></i> 15 Komentar</div>
+                    <div class="post-action"><i class="fas fa-share"></i> Bagikan</div>
+                    <div class="post-action"><i class="fas fa-bookmark"></i> Simpan</div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="post-author">
+                        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Bu Siti" class="post-avatar">
+                        <div class="post-author-info">
+                            <h3>Bu Siti Aminah</h3>
+                            <div class="post-meta">3 hari yang lalu · Indramayu, Jawa Barat</div>
+                        </div>
+                    </div>
+                    <div class="post-options">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p>Alhamdulillah, panen perdana cabai organik hari ini. Meskipun lahannya kecil tapi hasilnya lumayan. Terima kasih untuk semua teman-teman yang sudah berbagi ilmu di grup ini 🙏</p>
+                    <img src="https://images.unsplash.com/photo-1518977676601-b53f82aba655?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y2hpbGxpfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Cabai Organik" class="post-image">
+                </div>
+                <div class="post-actions">
+                    <div class="post-action"><i class="fas fa-thumbs-up"></i> 38 Suka</div>
+                    <div class="post-action"><i class="fas fa-comment"></i> 7 Komentar</div>
+                    <div class="post-action"><i class="fas fa-share"></i> Bagikan</div>
+                    <div class="post-action"><i class="fas fa-bookmark"></i> Simpan</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html" class="active">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>

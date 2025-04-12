@@ -1,0 +1,618 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Pusat Ilmu</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to knowledge base */
+        .search-container {
+            display: flex;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-sm);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-medium);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .category-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .category-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .filter-container {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+        
+        .filter-option {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-option i {
+            margin-right: var(--spacing-sm);
+        }
+        
+        .filter-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .article-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .article-content {
+            padding: var(--spacing-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-category {
+            font-size: var(--font-size-small);
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .article-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .article-excerpt {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+            flex: 1;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .article-author {
+            font-weight: 500;
+        }
+        
+        .article-date {
+            color: var(--text-medium);
+        }
+        
+        .featured-article {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .featured-article-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .featured-article-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .featured-article-category {
+            font-size: var(--font-size-small);
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .featured-article-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .featured-article-excerpt {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .featured-article-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-small);
+        }
+        
+        .featured-article-author {
+            font-weight: 500;
+        }
+        
+        .featured-article-date {
+            color: var(--text-medium);
+        }
+        
+        .faq-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .faq-answer {
+            color: var(--text-medium);
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .video-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .video-content {
+            padding: var(--spacing-md);
+        }
+        
+        .video-title {
+            font-size: var(--font-size-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .video-duration {
+            font-weight: 500;
+        }
+        
+        .video-views {
+            color: var(--text-medium);
+        }
+        
+        @media (max-width: 768px) {
+            .featured-article {
+                flex-direction: column;
+            }
+            
+            .featured-article-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .article-grid, .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li>
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li>
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li class="active">
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li>
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li>
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Pusat Ilmu</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-bookmark"></i> Tersimpan</button>
+                    <button class="btn btn-primary"><i class="fas fa-question-circle"></i> Tanya Ahli</button>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Cari artikel, video, atau panduan...">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="filter-container">
+                <div class="filter-options">
+                    <div class="filter-option active">
+                        <i class="fas fa-seedling"></i> Budidaya Tanaman
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-bug"></i> Hama & Penyakit
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-flask"></i> Pupuk & Nutrisi
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-water"></i> Pengairan
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-cloud-sun"></i> Cuaca & Iklim
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-chart-line"></i> Bisnis Tani
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Articles -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title">Direkomendasikan untuk Tanaman Anda</h2>
+                    <a href="#" class="see-all">Lihat Semua</a>
+                </div>
+                
+                <!-- Featured Article -->
+                <div class="featured-article">
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmljZSUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Serangan Wereng" class="featured-article-image">
+                    <div class="featured-article-content">
+                        <div class="featured-article-category">Budidaya Padi</div>
+                        <h3 class="featured-article-title">Cara Mengenali dan Mengatasi Serangan Wereng pada Tanaman Padi</h3>
+                        <div class="featured-article-excerpt">Pelajari cara mengidentifikasi gejala awal serangan wereng dan strategi pengendalian yang efektif untuk melindungi tanaman padi Anda.</div>
+                        <div class="featured-article-meta">
+                            <div class="featured-article-author">Oleh: Dr. Budi Santoso</div>
+                            <div class="featured-article-date">10 Apr 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article Grid -->
+                <div class="article-grid">
+                    <!-- Article 1 -->
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFybWluZ3xlbnwwfHwwfHw%3D&w=1000&q=80" alt="Pemupukan" class="article-image">
+                        <div class="article-content">
+                            <div class="article-category">Pupuk & Nutrisi</div>
+                            <h3 class="article-title">Jadwal Pemupukan Optimal untuk Padi Fase Vegetatif</h3>
+                            <div class="article-excerpt">Panduan lengkap tentang waktu dan dosis pemupukan yang tepat untuk mendukung pertumbuhan optimal tanaman padi pada fase vegetatif.</div>
+                            <div class="article-meta">
+                                <div class="article-author">Oleh: Ir. Siti Aminah</div>
+                                <div class="article-date">5 Apr 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 2 -->
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aXJyaWdhdGlvbnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="Pengairan" class="article-image">
+                        <div class="article-content">
+                            <div class="article-category">Pengairan</div>
+                            <h3 class="article-title">Teknik Pengairan Hemat Air untuk Tanaman Padi</h3>
+                            <div class="article-excerpt">Pelajari metode pengairan intermiten yang dapat menghemat penggunaan air hingga 30% tanpa mengurangi hasil panen.</div>
+                            <div class="article-meta">
+                                <div class="article-author">Oleh: Dr. Ahmad Wijaya</div>
+                                <div class="article-date">2 Apr 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 3 -->
+                    <div class="article-card">
+                        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmFpbnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="Cuaca" class="article-image">
+                        <div class="article-content">
+                            <div class="article-category">Cuaca & Iklim</div>
+                            <h3 class="article-title">Prediksi Cuaca Musim Tanam April-Juli 2025</h3>
+                            <div class="article-excerpt">Analisis pola cuaca dan strategi adaptasi untuk menghadapi perubahan iklim pada musim tanam mendatang.</div>
+                            <div class="article-meta">
+                                <div class="article-author">Oleh: Dewi Lestari, M.Sc</div>
+                                <div class="article-date">28 Mar 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <div class="category-header">
+                    <h2 class="category-title">Pertanyaan Umum</h2>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Bagaimana cara mengenali tanaman padi yang kekurangan nitrogen?</div>
+                    <div class="faq-answer">Tanaman padi yang kekurangan nitrogen umumnya menunjukkan gejala daun menguning dimulai dari ujung daun tua dan menyebar ke seluruh daun. Pertumbuhan tanaman juga akan terhambat dan tampak kerdil. Untuk mengatasinya, Anda dapat menambahkan pupuk urea dengan dosis 100-150 kg/ha.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Berapa ketinggian air yang ideal untuk tanaman padi fase vegetatif?</div>
+                    <div class="faq-answer">Ketinggian air yang ideal untuk tanaman padi pada fase vegetatif adalah sekitar 3-5 cm. Pengairan intermiten (berselang) juga dapat diterapkan untuk menghemat air dan mengurangi emisi gas metana.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Kapan waktu terbaik untuk menyemprot pestisida?</div>
+                    <div class="faq-answer">Waktu terbaik untuk menyemprot pestisida adalah pada pagi hari (06.00-10.00) atau sore hari (15.00-18.00) ketika angin tidak terlalu kencang. Hindari penyemprotan saat cuaca panas terik atau saat akan turun hujan. Pastikan juga untuk menggunakan alat pelindung diri yang memadai.</div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">Bagaimana cara menghitung kebutuhan pupuk untuk lahan saya?</div>
+                    <div class="faq-answer">Untuk menghitung kebutuhan pupuk, Anda perlu mengetahui luas lahan, jenis tanaman, dan rekomendasi dosis pupuk per hektar. Misalnya, jika rekomendasi pupuk NPK adalah 300 kg/ha dan luas lahan Anda 0.5 ha, maka kebutuhan pupuk adalah 300 kg × 0.5 = 150 kg. Untuk hasil yang lebih akurat, sebaiknya lakukan analisis tanah terlebih dahulu.</div>
+                </div>
+            </div>
+
+            <!-- Video Tutorials -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title">Video Tutorial</h2>
+                    <a href="#" class="see-all">Lihat Semua</a>
+                </div>
+                
+                <div class="video-grid">
+                    <!-- Video 1 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmljZSUyMGZpZWxkfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Teknik Tanam Padi">
+                            <div class="video-play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-content">
+                            <h3 class="video-title">Teknik Tanam Padi Jajar Legowo</h3>
+                            <div class="video-meta">
+                                <div class="video-duration">12:45</div>
+                                <div class="video-views">1.2K tayangan</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 2 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFybWluZ3xlbnwwfHwwfHw%3D&w=1000&q=80" alt="Pemupukan">
+                            <div class="video-play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-content">
+                            <h3 class="video-title">Cara Pemupukan yang Benar untuk Tanaman Padi</h3>
+                            <div class="video-meta">
+                                <div class="video-duration">08:32</div>
+                                <div class="video-views">956 tayangan</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 3 -->
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1587334207407-371cc5f15af5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVzdGljaWRlfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Pengendalian Hama">
+                            <div class="video-play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-content">
+                            <h3 class="video-title">Pengendalian Hama Terpadu pada Tanaman Padi</h3>
+                            <div class="video-meta">
+                                <div class="video-duration">15:20</div>
+                                <div class="video-views">783 tayangan</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html" class="active">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>

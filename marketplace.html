@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriChain - Toko Tani</title>
+    <link rel="stylesheet" href="fixed-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles specific to marketplace */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .product-content {
+            padding: var(--spacing-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .product-price {
+            font-size: var(--font-size-large);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .product-description {
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-md);
+            flex: 1;
+        }
+        
+        .product-meta {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .rating-stars {
+            color: #FFC107;
+            margin-right: var(--spacing-sm);
+        }
+        
+        .rating-count {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+        
+        .category-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .category-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-sm);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-size: var(--font-size-medium);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .filter-container {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+        
+        .filter-option {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-option i {
+            margin-right: var(--spacing-sm);
+        }
+        
+        .filter-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .rental-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .rental-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .rental-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .rental-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .rental-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .rental-content {
+            padding: var(--spacing-md);
+        }
+        
+        .rental-title {
+            font-size: var(--font-size-large);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .rental-price {
+            font-size: var(--font-size-medium);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .rental-status {
+            font-size: var(--font-size-small);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .rental-status.available {
+            color: var(--success-color);
+        }
+        
+        .rental-status.unavailable {
+            color: var(--warning-color);
+        }
+        
+        .rental-location {
+            font-size: var(--font-size-small);
+            color: var(--text-medium);
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi-slash"></i> Mode Offline - Data akan disinkronkan saat terhubung kembali
+    </div>
+
+    <!-- Menu Overlay for Mobile -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Burger Menu for Mobile -->
+    <button class="burger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>AgriChain</h1>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    </li>
+                    <li>
+                        <a href="crop-management.html"><i class="fas fa-seedling"></i> Tanaman Saya</a>
+                    </li>
+                    <li class="active">
+                        <a href="marketplace.html"><i class="fas fa-store"></i> Toko Tani</a>
+                    </li>
+                    <li>
+                        <a href="knowledge-base.html"><i class="fas fa-book"></i> Pusat Ilmu</a>
+                    </li>
+                    <li>
+                        <a href="community.html"><i class="fas fa-users"></i> Komunitas</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-section-title">BANTUAN</div>
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a>
+                    </li>
+                    <li>
+                        <a href="help.html"><i class="fas fa-question-circle"></i> Bantuan</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Foto Profil" class="avatar">
+                <div class="user-info">
+                    <h3>Pak Slamet</h3>
+                    <p>Petani Padi</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Toko Tani</h1>
+                <div class="header-actions">
+                    <button class="btn btn-outline"><i class="fas fa-shopping-cart"></i> Keranjang <span class="badge">2</span></button>
+                    <button class="btn btn-primary"><i class="fas fa-list"></i> Pesanan Saya</button>
+                </div>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Cari produk (pupuk, benih, alat, dll)">
+                <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="filter-container">
+                <button class="btn btn-outline"><i class="fas fa-filter"></i> Filter</button>
+                <div class="filter-options">
+                    <div class="filter-option active">
+                        <i class="fas fa-th"></i> Semua
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-seedling"></i> Benih
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-flask"></i> Pupuk
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-bug-slash"></i> Pestisida
+                    </div>
+                    <div class="filter-option">
+                        <i class="fas fa-tools"></i> Alat
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommended Products -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title">Rekomendasi untuk Tanaman Anda</h2>
+                    <a href="#" class="see-all">Lihat Semua</a>
+                </div>
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmFybWluZ3xlbnwwfHwwfHw%3D&w=1000&q=80" alt="Pupuk NPK" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Pupuk NPK Phonska Plus</h3>
+                            <div class="product-price">Rp 115.000</div>
+                            <div class="product-description">Pupuk lengkap untuk fase vegetatif tanaman padi. Kemasan 50kg.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <div class="rating-count">(120)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1587334207407-371cc5f15af5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVzdGljaWRlfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Pestisida Organik" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Pestisida Organik Anti Wereng</h3>
+                            <div class="product-price">Rp 75.000</div>
+                            <div class="product-description">Pestisida organik khusus untuk mengendalikan hama wereng pada tanaman padi.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="rating-count">(85)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1598023696416-0193a0bcd302?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8c3ByYXllcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="Sprayer Elektrik" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Sprayer Elektrik 16L</h3>
+                            <div class="product-price">Rp 850.000</div>
+                            <div class="product-description">Sprayer elektrik dengan kapasitas 16L, baterai tahan hingga 8 jam.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="rating-count">(42)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rental Equipment -->
+            <div class="rental-section">
+                <div class="category-header">
+                    <h2 class="category-title">Alat Pertanian untuk Disewa</h2>
+                    <a href="#" class="see-all">Lihat Semua</a>
+                </div>
+                <div class="rental-grid">
+                    <!-- Rental 1 -->
+                    <div class="rental-card">
+                        <img src="https://images.unsplash.com/photo-1589923188651-268a9765e432?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dHJhY3RvcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="Traktor Tangan" class="rental-image">
+                        <div class="rental-content">
+                            <h3 class="rental-title">Traktor Tangan 8.5 HP</h3>
+                            <div class="rental-price">Rp 150.000 / hari</div>
+                            <div class="rental-status available">Tersedia untuk disewa</div>
+                            <div class="rental-location">Koperasi Tani Makmur (2.5 km)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rental 2 -->
+                    <div class="rental-card">
+                        <img src="https://images.unsplash.com/photo-1591086429666-800d9c37c5c8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGFydmVzdGVyfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Mesin Panen" class="rental-image">
+                        <div class="rental-content">
+                            <h3 class="rental-title">Mesin Panen Padi</h3>
+                            <div class="rental-price">Rp 500.000 / hari</div>
+                            <div class="rental-status available">Tersedia untuk disewa</div>
+                            <div class="rental-location">Gapoktan Maju Bersama (5 km)</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rental 3 -->
+                    <div class="rental-card">
+                        <img src="https://images.unsplash.com/photo-1579829366248-204fe8413f31?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZHJvbmV8ZW58MHx8MHx8&w=1000&q=80" alt="Drone Penyemprot" class="rental-image">
+                        <div class="rental-content">
+                            <h3 class="rental-title">Drone Penyemprot</h3>
+                            <div class="rental-price">Rp 300.000 / hari</div>
+                            <div class="rental-status unavailable">Sedang disewa (tersedia 25 Apr)</div>
+                            <div class="rental-location">Toko AgriTech (3.2 km)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Products -->
+            <div class="category-section">
+                <div class="category-header">
+                    <h2 class="category-title">Produk Populer</h2>
+                    <a href="#" class="see-all">Lihat Semua</a>
+                </div>
+                <div class="product-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1574323347407-f5e1c5a1ec21?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmljZSUyMHNlZWR8ZW58MHx8MHx8&w=1000&q=80" alt="Benih Padi" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Benih Padi Ciherang</h3>
+                            <div class="product-price">Rp 95.000</div>
+                            <div class="product-description">Benih padi varietas Ciherang berkualitas tinggi. Kemasan 5kg.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="rating-count">(156)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1560806175-c6e5e5e72d70?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9sa3xlbnwwfHwwfHw%3D&w=1000&q=80" alt="Cangkul" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Cangkul Premium</h3>
+                            <div class="product-price">Rp 125.000</div>
+                            <div class="product-description">Cangkul dengan gagang kayu jati dan mata baja anti karat.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="rating-count">(98)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <img src="https://images.unsplash.com/photo-1585314540237-13cb52fe9e67?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Z2xvdmVzfGVufDB8fDB8fA%3D%3D&w=1000&q=80" alt="Sarung Tangan" class="product-image">
+                        <div class="product-content">
+                            <h3 class="product-title">Sarung Tangan Tahan Air</h3>
+                            <div class="product-price">Rp 45.000</div>
+                            <div class="product-description">Sarung tangan tahan air dan tahan sobek untuk pekerjaan pertanian.</div>
+                            <div class="product-rating">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="rating-count">(72)</div>
+                            </div>
+                            <button class="btn btn-primary btn-block"><i class="fas fa-shopping-cart"></i> Beli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="crop-management.html">
+            <i class="fas fa-seedling"></i>
+            <span>Tanaman</span>
+        </a>
+        <a href="marketplace.html" class="active">
+            <i class="fas fa-store"></i>
+            <span>Toko</span>
+        </a>
+        <a href="knowledge-base.html">
+            <i class="fas fa-book"></i>
+            <span>Ilmu</span>
+        </a>
+        <a href="community.html">
+            <i class="fas fa-users"></i>
+            <span>Komunitas</span>
+        </a>
+    </nav>
+
+    <script src="mobile-navigation.js"></script>
+<footer-btn></footer-btn>
+
+<script
+			defer
+			data-domain="manus.space"
+			src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+		></script>
+		<script>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+			plausible('custom-pageview', {
+			  props: {
+    			domain: window.location.host
+  			}
+			})
+		</script></body>
+</html>
